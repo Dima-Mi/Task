@@ -1,0 +1,63 @@
+{% extends "sales/base.html" %}
+{% load static %}
+{% block title %}
+{% if category %}{{ category.name }}{% else %}Latest sales{% endif %}
+{% endblock %}
+{% block content %}
+
+<div id="sidebar">
+    <h3>Categories</h3>
+    <ul>
+        <li {% if not category %}class="selected" {% endif %}>
+            <a href="{% url 'sales:product_list' %}">All</a>
+        </li>
+        {% for c in categories %}
+        <li {% if category.slug == c.slug %} class="selected" {% endif %}>
+            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% if request.user.is_authenticated %}
+
+    <h3>Shop</h3>
+    <ul>
+        {% for c in shop %}
+            <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h3>Warehouse</h3>
+    <ul>
+        {% for c in warehouse %}
+            <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+<div id="main" class="product-list">
+    <h1>{% if category %}{{ category.name }}</h1>
+    {% for product in products %}
+      <div class="item">
+        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+      </div>
+    {% endfor %}
+    <h1>{% else %}Latest sales</h1>
+    {% for product in sales_list %}
+    <div class="item">
+        <a href="{{ product.products.get_absolute_url }}">{{ product.products }}</a>
+        <br>
+        [<a href="{{ product.warehouse.get_absolute_url }}">{{ product.warehouse }}</a>]
+        <br>
+        {% if product.status == 'available'%}
+            <span style="color: #00FF00; "><small>{{ product.status }}</small></span>
+        {% else %}
+            <span style="color: #FF0000; ">{{ product.status }}</span><br>
+            <span style="color: #FF0000; "><small>{{ product.updated }}</small></span>
+        {% endif %}
+        <br>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

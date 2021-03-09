@@ -1,0 +1,28 @@
+{% extends "sales/base.html" %}
+{% load static %}
+{% block title %}
+{{ warehouse.name }}
+{% endblock %}
+{% block content %}
+<div class="product-detail">
+    <h1>{{ warehouse.name }}</h1>
+    <h3>Stores:</h3>
+        {% for item in store %}
+        <a href="{{ item.get_absolute_url }}">{{item}}</a><br>
+        {% endfor %}
+</div>
+<div id="main" class="product-list">
+    <h3>All products in warehouse: </h3>
+    {% for product in catalog %}
+    <div class="item">
+        <a href="{{ product.products.get_absolute_url }}">{{ product.products }}</a><br>
+        {% if product.status == 'available'%}
+            <span style="color: #00FF00; "><small>{{ product.status }}</small></span>
+        {% else %}
+            <span style="color: #FF0000; ">{{ product.status }}</span><br>
+            <span style="color: #FF0000; "><small>{{ product.updated }}</small></span>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% endblock %}
+</div>

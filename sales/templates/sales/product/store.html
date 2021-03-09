@@ -1,0 +1,33 @@
+{% extends "sales/base.html" %}
+{% load static %}
+{% block title %}
+{{ store.name }}
+{% endblock %}
+{% block content %}
+<div class="product-detail">
+    <h1>{{ store.name }}</h1>
+    <h3>{{ store.description}}</h3>
+    <br>
+    <h3>Contact: {{ store.contact }}</h3>
+    <h3>Warehouse:</h3>
+    {% for warh in store.warehouse.all %}
+    <h3><a href="{{ warh.get_absolute_url }}">{{ warh.name }} </a></h3>
+    {% endfor %}
+    <br>
+    <h3>All products this shop:</h3>
+
+    <div id="main" class="product-list">
+        {% for product in products %}
+        <div class="item">
+            <a href="{{ product.get_absolute_url }}">
+                <img src="{% static 'img/no_image.png' %}" height="200">
+            </a>
+            <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+            <br>
+            ${{ product.price }}
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endblock %}
+</div>

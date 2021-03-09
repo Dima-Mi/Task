@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}SoAfGS{% endblock %}</title>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+</head>
+<body>
+<div id="header">
+    <a href="/" class="logo">System of accounting for goods sold</a>
+</div>
+<div id="subheader">
+    {% if request.user.is_authenticated %}
+        <ul>
+            <p>Hi, {{ user.username }}!</p>
+            <div style="font-size: 12px">
+                <a href="{% url 'sales:logout' %}">Logout</a>
+            </div>
+        </ul>
+    {% else %}
+        <ul>
+            <li><a href="{% url 'sales:register' %}">Register</a></li>
+            <li><a href="{% url 'sales:login' %}">Login</a></li>
+        </ul>
+    {% endif %}
+</div>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

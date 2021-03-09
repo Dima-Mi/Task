@@ -1,0 +1,36 @@
+{% extends "sales/base.html" %}
+{% load static %}
+{% block title %}
+{{ product.name }}
+{% endblock %}
+{% block content %}
+<div class="product-detail">
+    <img src="{% if product.image %}{{ product.image.url }}
+    {% else %}{% static 'img/no_image.png' %}{% endif %}">
+    <h1>{{ product.name }}</h1>
+    <h3>Category:
+        <a href="{{ product.category.get_absolute_url }}">{{product.category }}</a>
+    </h3>
+
+    <h3>Shop:
+        <a href="{{ product.store.get_absolute_url }}">{{product.store }}</a>
+    </h3>
+
+    <h3>Warehouse:</h3>
+    {% for item in catalog %}
+        <h4><a href="{{ item.warehouse.get_absolute_url }}">{{item.warehouse}}</a>
+            {% if item.status == 'available'%}
+                <small style="color:#00FF00"> Available </small>
+            {% else %}
+                <small style="color:#FF0000"> Sold </small>
+                (<span style="color: #FF0000; "><small>{{ item.updated }}</small></span>)
+            {% endif %}
+        </h4>
+
+    {% endfor %}
+
+
+    <p class="price">${{ product.price }}</p>
+    {{ product.description|linebreaks }}
+</div>
+{% endblock %}
